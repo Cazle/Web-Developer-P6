@@ -8,7 +8,11 @@ exports.createSauce = (req, res, next) => {
   const sauce = new Sauce({
       ...sauceObject,
       userId: req.auth.userId,
-      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+      likes: 0,
+      dislikes: 0,
+      usersLiked: [],
+      usersDisliked: []
   });
 
   sauce.save()
@@ -72,6 +76,49 @@ exports.OneSauce =  (req, res, next) => {
           res.status(500).json({ error });
       });
 };
+
+exports.modifyLike= (req, res, next) => {
+  
+  switch (req.body.like){
+
+    case 1:
+      Sauce.updateOne({_id: req.params.id},
+         {$push: {usersLiked: req.body.userId}, 
+         $inc: {likes: +1}})
+      .then(() => res.status(200).json({ message: "Like added" }))
+      .catch((error) => res.status(400).json({ error }));
+      break;
+
+    case -1:
+      Sauce.updateOne({_id: req.params.id},
+         {$push: {usersDisliked: req.body.userId}, 
+         $inc: {dislikes: +1}})
+      .then(() => res.status(200).json({ message: "Dislike added" }))
+      .catch((error) => res.status(400).json({ error }));
+      break;
+
+    case 0:
+      Sauce.findOne({_id: req.params.id})
+      .then((sauce) =>{
+
+        if(sauce.usersLiked.includes(req.body.userId)){
+          Sauce.updateOne({_id: req.params.id},
+            {$pull:{usersLiked: req.body.userId}, 
+            $inc: {likes: -1}})
+            .then(() => res.status(200).json({message: "Like removed"}))
+            .catch((error) => res.status(400).json({ error }));
+
+          }
+          else if(sauce.usersDisliked.includes(req.body.userId)) {
+            Sauce.updateOne({_id: req.params.id},{$pull:{usersDisliked: req.body.userId}, $inc: {dislikes: -1}})
+            .then(()=> res.status(200).json({message: "Dislike removed"}))
+            .catch((error) => res.status(400).json({error}));
+          }
+      })
+      .catch((error) => res.status(404).json({error}))
+      break;
+  }
+}
 
   exports.getAllSauce = (req, res, next) => {
     Sauce.find().then(

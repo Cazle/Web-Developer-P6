@@ -118,7 +118,7 @@ exports.modifyLike= (req, res, next) => {
       .catch((error) => res.status(404).json({error}))
       break;
   }
-}
+};
 
   exports.getAllSauce = (req, res, next) => {
     Sauce.find().then(

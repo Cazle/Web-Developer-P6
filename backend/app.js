@@ -6,6 +6,10 @@ const path = require('path');
 const stuffRoutes = require('./routes/stuff');
 const userRoutes = require('./routes/user');
 
+require('dotenv').config();
+process.env.PROJECT_MONGODB;
+console.log(process.env.PROJECT_MONGODB)
+
 const app = express();
 
 app.use((req, res, next) => {
@@ -15,7 +19,8 @@ app.use((req, res, next) => {
   next();
 });
 
-mongoose.connect('mongodb+srv://Cazle:1234piiquante@piiquante.pskllew.mongodb.net/?retryWrites=true&w=majority',
+mongoose.connect(
+  process.env.PROJECT_MONGODB,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))

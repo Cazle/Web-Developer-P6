@@ -20,29 +20,13 @@ Cela lanceras le serveur Frontend.
 
 Clique droit sur le dossier 'backend' et 'Open with in intagrated terminal' et executez ces commandes :
 
-npm init
 
-npm install -g nodemon
+npm install --save express mongoose helmet mongoose-unique-validator bcrypt jsonwebtoken multer dotenv 
 
-npm install express
 
-npm install mongoose
 
-npm install helmet
+Une fois tout ceci installé, vous pouvez lancer la commande "npx nodemon server" avec le terminal sur le dossier 'backend', et veuillez verifier que votre serveur frontend est bien demarré.
 
-npm install mongoose-unique-validator
-
-npm install bcrypt
-
-npm install jsonwebtoken
-
-npm install multer
-
-npm install dotenv   
-
-Une fois tout ceci installé, vous pouvez lancer la commande "nodemon server" avec le terminal sur le dossier 'backend', et veuillez verifier que votre serveur frontend est bien demarré.
-
-A la racine du dossier, veuillez également faire avec le terminal "npm install dotenv".
 
 Vous avez terminé l'installation du projet 'Piiquante'. Veillez à bien installer les packages listés ci-dessus et respecter les étapes, sans quoi le projet rencontreras des difficultés.
 
